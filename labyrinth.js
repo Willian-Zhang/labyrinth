@@ -1,10 +1,10 @@
-
+'use strict';
 function setup() {    
-    board = new Board();
+    let board = new Board();
     board.connect({baudrate: 9600});
     board.on('connected', e=>console.log(e))
     board.on('point', (point)=>{
-        console.log(point);
+        console.log(point[6]);
     });
 }
 

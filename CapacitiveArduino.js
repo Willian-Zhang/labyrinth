@@ -1,3 +1,4 @@
+'use strict';
 class Board extends EventEmitter2{
 
     constructor(){
