@@ -1,12 +1,27 @@
 'use strict';
+
+Array.prototype.argmax = function() {
+    return this.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
+}
+
 class Board extends EventEmitter2{
 
-    constructor(){
+    constructor(devices = []){
         super();
         this.serial = new p5.SerialPort();
         this.buffer = [];
         this.on('line', this.processLine.bind(this));
         this.on('point', this.processPoint.bind(this));
+        this.devices = devices;
+        // devices.map(c=>{
+        //     if(c == Button || c == CapasitiveSensor){
+        //         return c()
+        //     }
+        // });
+        this.capacitors = this.devices.filter(d=>d instanceof CapasitiveSensor)
+        this.buttons    = this.devices.filter(d=>d instanceof Button)
+        this.last_some_capacitors_activated = false;
+        this.collectedValues = null;
     }
     connect(options){
         // serial.on('data', serialEvent);  // callback for when new data arrives
@@ -35,14 +50,52 @@ class Board extends EventEmitter2{
             this.buffer = [];
             this.emit('line', buffer);
         }else{
-            this.buffer.push(code)
+            this.buffer.push(code);
         }
     }
     processLine(buffer){
         this.emit('point', String.fromCharCode(...buffer).split('\t').map(s=>+s));
     }
+    __collect_capacitor_values__(point){
+        this.devices.map((device, i)=>{
+            if(device instanceof CapasitiveSensor){
+                this.collectedValues[i].push(point[i+1]);
+            }
+        });
+    }
+    start_reset(){
+        this.collectedValues = this.devices.map((_)=>[]);
+        this.on('point', this.__collect_capacitor_values__);
+    }
+    finish_reset(){
+        this.off('point', this.__collect_capacitor_values__);
+        console.log("reset values", this.collectedValues);
+        this.devices.map((device, i)=>{
+            if(device instanceof CapasitiveSensor){
+                device.reset(this.collectedValues)
+            }
+        });
+        this.collectedValues = this.devices.map((_)=>[]);
+    }
     processPoint(point){
-        // TODO:
+        this.devices.map((device, i)=>{
+            if(device instanceof CapasitiveSensor||
+               device instanceof Button){
+                device.tick(point[i+1]);
+            }
+        });
+        let someoneActivated = this.capacitors.some(capacitor => capacitor.state);
+        console.log('someoneActivated', someoneActivated)
+        // console.log('activated', this.capacitors.map(capacitor => capacitor.state))
+        if(this.last_some_capacitors_activated != someoneActivated){
+            if(someoneActivated){
+                let which = this.capacitors.map(c=>c.value).argmax();
+                this.emit('ball-in', which);
+            }else{
+                this.emit('ball-out');
+            }
+            this.last_some_capacitors_activated = someoneActivated;
+        }
     }
     disconnect(){
         // TODO:
