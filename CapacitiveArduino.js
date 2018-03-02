@@ -54,7 +54,15 @@ class Board extends EventEmitter2{
         }
     }
     processLine(buffer){
-        this.emit('point', String.fromCharCode(...buffer).split('\t').map(s=>+s));
+        let point = String.fromCharCode(...buffer).split('\t').map(s=>+s);
+        if( point.length == this.devices.length+1){
+            this.emit('point', point);
+        }else{
+            this.emit('warning', {
+                error: `Miss alignment of devices. Should be ${this.devices.length+1}, getting ${point.length}.`,
+                point: point
+            });
+        }        
     }
     __collect_capacitor_values__(point){
         this.devices.map((device, i)=>{
@@ -89,7 +97,9 @@ class Board extends EventEmitter2{
         // console.log('activated', this.capacitors.map(capacitor => capacitor.state))
         if(this.last_some_capacitors_activated != someoneActivated){
             if(someoneActivated){
-                let which = this.capacitors.map(c=>c.value).argmax();
+                let all = this.capacitors.map(c=>c.value);
+                console.log('values', all.map(v=>String(v*10).slice(0, 6)).join(' ') );
+                let which = all.argmax();
                 this.emit('ball-in', which);
             }else{
                 this.emit('ball-out');

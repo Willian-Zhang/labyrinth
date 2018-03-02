@@ -48,7 +48,7 @@ class CapasitiveSensor extends EventEmitter2{
         // debugger
         let avg = mean(values);
         let vari = variance(values);
-        let threshold = avg + 2.5*vari;
+        let threshold = avg + 10*vari;
         this.threshold = threshold;
         this.mean = avg;
     }
