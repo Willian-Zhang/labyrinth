@@ -6,9 +6,10 @@ class HoleView{
         this.r = this.r_default;
         this.r_max = r_default*r_max;
         this.r_min = r_default*r_min;
-        this.brightness = 'rgba(255,255,255, 0.2)';
+        this.color_base = '86,180,80';
+        this.brightness = `rgba(${this.color_base}, 1)`
         if(deacitivated){
-            this.brightness = 'rgba(255,255,255, 1)';
+            this.color_base = '255,255,255';
         }
         this.grow = false;
         this.grow_speed = grow_speed;
@@ -19,11 +20,13 @@ class HoleView{
 
     }
     on(){
-        this.brightness = 'rgba(0,255,0, 0.25)';
+        this.color_base = '107,209,234';
+        // this.brightness = 'rgba(107,209,234, 1)';
         this.zoom = 1.5;
     }
     off(){
-        this.brightness = 'rgba(255,255,255, 0.2)';
+        this.color_base = '86,180,80';
+        // this.brightness = `rgba(${this.color_base}, 1)`
         this.zoom = 1;
     }
     activate(){
@@ -42,9 +45,9 @@ class HoleView{
         }
     }
     show(){
-        stroke(255);
-        strokeWeight(4);
-        fill(this.brightness);
+        stroke(`rgba(${this.color_base}, 0.5)`);
+        strokeWeight(6);
+        fill(`rgba(${this.color_base}, 1)`);
         ellipse(this.x, this.y, this.r * 2 * this.zoom);
     }
 }

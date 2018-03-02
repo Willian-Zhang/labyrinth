@@ -9,7 +9,7 @@ function preload() {
 
 var margin = 0.1;
 var board_ratio = 16/9;
-var hole_to_board = 0.03;
+var hole_to_board = 0.02;
 
 var capacitors_to_view = {
     0: 0,
@@ -24,6 +24,7 @@ var hole_views = [];
 let board_width;
 let board_height;
 let y0;
+let x0;
 
 var on_hole = null; // i of capacitor
 var target_hole = null;// i of capacitor
@@ -75,7 +76,7 @@ function setup() {
     {
         
 
-        let x0 = margin*windowWidth;
+        x0 = margin*windowWidth;
         board_width = windowWidth - 2*x0;
         board_height = board_width /board_ratio;
         y0 = (windowHeight - board_height)/2;
@@ -104,6 +105,7 @@ var blood_interval = null;
 var target_left = [];
 var current_sec_spent = 0;
 function clear_round(){
+    target_hole = null;
     if(blood_interval){
         clearInterval(blood_interval);
         blood_interval = null;
@@ -136,6 +138,19 @@ function capacitor_to_view(i){
 }
 function draw() {
     background(1);
+    {
+        let color = 'rgba(58,105,53, 1)';
+        let round = 10;
+        let width = 15;
+        push();
+        fill(0);
+        stroke(color);
+        strokeWeight(width);
+        rect(x0, y0, board_width, board_height, round,round,round,round);
+        line(x0, y0+board_height/2, x0+board_width, y0+board_height/2);
+        line(x0+board_width/2, y0, x0+board_width/2, y0+board_height);
+        pop();
+    }
     hole_views.forEach((hole, i)=>{
         if(hole === capacitor_to_view(target_hole)){
             hole.activate();
