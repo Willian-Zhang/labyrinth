@@ -86,7 +86,7 @@ function setup() {
         hole_views.push(new HoleView(x0, y0+board_height, button_size))
         hole_views.push(new HoleView(x0+board_width, y0, button_size))
         hole_views.push(new HoleView(x0+board_width, y0+board_height, button_size))
-        hole_views.push(new HoleView(x0+board_width, y0+board_height, button_size))
+        hole_views.push(new HoleView(x0+board_width/2, y0+board_height/2, button_size ,true))
     }
 }
 
@@ -127,7 +127,7 @@ function next_round(){
             }
         }, 1000);
     }else{
-        win()
+        win();
     }
 }
 function capacitor_to_view(i){

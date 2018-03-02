@@ -1,5 +1,5 @@
 class HoleView{
-    constructor(x, y, r_default=5, r_min=0.5, r_max=1.5, grow_speed=0.5) {
+    constructor(x, y, r_default=5, deacitivated = false, r_min=0.5, r_max=1.5, grow_speed=0.5) {
         this.x = x;
         this.y = y;
         this.r_default = r_default;
@@ -7,6 +7,9 @@ class HoleView{
         this.r_max = r_default*r_max;
         this.r_min = r_default*r_min;
         this.brightness = 'rgba(255,255,255, 0.2)';
+        if(deacitivated){
+            this.brightness = 'rgba(255,255,255, 1)';
+        }
         this.grow = false;
         this.grow_speed = grow_speed;
         this.zoom = 1;
