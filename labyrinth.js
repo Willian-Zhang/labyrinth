@@ -12,9 +12,9 @@ var board_ratio = 16/9;
 var hole_to_board = 0.02;
 
 var capacitors_to_view = {
-    0: 0,
-    1: 1,
-    2: 2,
+    0: 2,
+    1: 0,
+    2: 1,
     3: 3
 };
 var capacitors = Object.keys(capacitors_to_view);
@@ -28,6 +28,7 @@ let x0;
 
 var on_hole = null; // i of capacitor
 var target_hole = null;// i of capacitor
+var last_hit = null;
 
 function setup() {   
     let button =  new Button();
@@ -94,9 +95,12 @@ function setup() {
 function hit_hole(which){
     if(target_hole !== null){
         if(target_hole == which){
+            last_hit = which;
             next_round();
         }else{
-            lose("Wrong hole!");
+            if(last_hit != which){
+                lose("Wrong hole!");
+            }
         }
     }
 }
