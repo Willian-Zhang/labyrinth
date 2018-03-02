@@ -35,7 +35,6 @@ class CapasitiveSensor extends EventEmitter2{
         
         if(this.state != over){
             if(over == true){
-                console.log('activate!')
                 this.emit("activate");
             }else{
                 this.emit("release");
@@ -46,11 +45,11 @@ class CapasitiveSensor extends EventEmitter2{
         this.value = relativeValue;
     }
     reset(values){
+        // debugger
         let avg = mean(values);
         let vari = variance(values);
-        let threshold = avg + 0.0*vari;
+        let threshold = avg + 2.5*vari;
         this.threshold = threshold;
         this.mean = avg;
-        console.log(avg, vari)
     }
 }
