@@ -97,7 +97,9 @@ class Board extends EventEmitter2{
         // console.log('activated', this.capacitors.map(capacitor => capacitor.state))
         if(this.last_some_capacitors_activated != someoneActivated){
             if(someoneActivated){
-                let which = this.capacitors.map(c=>c.value).argmax();
+                let all = this.capacitors.map(c=>c.value);
+                console.log('values', all.map(v=>String(v*10).slice(0, 6)).join(' ') );
+                let which = all.argmax();
                 this.emit('ball-in', which);
             }else{
                 this.emit('ball-out');

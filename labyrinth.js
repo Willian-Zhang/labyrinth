@@ -7,7 +7,6 @@ function setup() {
         new CapasitiveSensor(),
         new CapasitiveSensor(),
         new CapasitiveSensor(),
-        new CapasitiveSensor(),
         new CapasitiveSensor()
     ];
     let board = new Board(devices);
@@ -15,8 +14,14 @@ function setup() {
     console.log(`Connecting on ${port}...`)
     board.on('connected', ()=>{
         console.log('connected');
-        button.on('press', ()=>board.start_reset());
-        button.on('release', ()=>board.finish_reset());
+        button.on('press', ()=>{
+            console.log('reseting...');
+            board.start_reset();
+        });
+        button.on('release', ()=>{
+            board.finish_reset();
+            console.log('resetted.');
+        });
     });
     board.on('warning', (warning)=>{
         console.warn(warning);
