@@ -86,6 +86,7 @@ function setup() {
         hole_views.push(new HoleView(x0, y0+board_height, button_size))
         hole_views.push(new HoleView(x0+board_width, y0, button_size))
         hole_views.push(new HoleView(x0+board_width, y0+board_height, button_size))
+        hole_views.push(new HoleView(x0+board_width, y0+board_height, button_size))
     }
 }
 
@@ -98,32 +99,29 @@ function hit_hole(which){
         }
     }
 }
-var blood_timeout = null;
+
 var blood_interval = null;
 var target_left = [];
 var current_sec_spent = 0;
-function next_round(){
-    if(blood_timeout){
-        clearTimeout(blood_timeout);
-        blood_timeout = null;
-    }
+function clear_round(){
     if(blood_interval){
         clearInterval(blood_interval);
         blood_interval = null;
     }
     current_sec_spent = 0;
+}
+function next_round(){
+    clear_round();
 
     let next_target = target_left.pop();
     if(next_target){
         target_hole = next_target;
-        blood_timeout = setTimeout(function(){
-            lose("Timeout!");
-        }, total_timeout* 1000);
         blood_interval = setInterval(function(){
             current_sec_spent += 1;
             if(current_sec_spent > total_timeout){
                 clearInterval(blood_interval);
                 blood_interval = null;
+                lose("Timeout!");
             }else{
                 set_blood((total_timeout - current_sec_spent)* 100/total_timeout)
             }
@@ -186,10 +184,8 @@ function start(rounds=3, timeout=30){
     });
 }
 
-function start_round(){
-
-}
 function win(){
+    clear_round();
     swal({
         title: "Win!",
         text: "You win the game!",
@@ -200,6 +196,7 @@ function win(){
     });
 }
 function lose(reason = 'Timeout'){
+    clear_round();
     swal({
         title: reason,
         text: "You fail the game!",
