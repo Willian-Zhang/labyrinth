@@ -69,10 +69,10 @@ class Board extends EventEmitter2{
     }
     finish_reset(){
         this.off('point', this.__collect_capacitor_values__);
-        console.log("reset values", this.collectedValues);
+        // console.log("reset values", this.collectedValues);
         this.devices.map((device, i)=>{
             if(device instanceof CapasitiveSensor){
-                device.reset(this.collectedValues)
+                device.reset(this.collectedValues[i])
             }
         });
         this.collectedValues = this.devices.map((_)=>[]);
@@ -85,7 +85,7 @@ class Board extends EventEmitter2{
             }
         });
         let someoneActivated = this.capacitors.some(capacitor => capacitor.state);
-        console.log('someoneActivated', someoneActivated)
+        // console.log('someoneActivated', someoneActivated)
         // console.log('activated', this.capacitors.map(capacitor => capacitor.state))
         if(this.last_some_capacitors_activated != someoneActivated){
             if(someoneActivated){
