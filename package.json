@@ -1,0 +1,24 @@
+{
+  "name": "labyrinth",
+  "version": "1.0.0",
+  "description": "In order for this get it run, you also need a Serial Server to pass Arduino signal to P5",
+  "main": "labyrinth.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Willian-Zhang/labyrinth-arduino.git"
+  },
+  "author": "Willian Zhang, Steven Medina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Willian-Zhang/labyrinth-arduino/issues"
+  },
+  "homepage": "https://github.com/Willian-Zhang/labyrinth-arduino#readme",
+  "dependencies": {
+    "eventemitter2": "^5.0.1",
+    "p5.serialserver": "0.0.25",
+    "simple-statistics": "^5.2.1"
+  }
+}
